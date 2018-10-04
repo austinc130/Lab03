@@ -1,0 +1,86 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="moment.min.js"></script>
+    <title></title>
+</head>
+<body>
+    <script src="JavaScript.js"></script>
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text">Customer Name</span>
+        </div>
+        <input type="text" id="name" class="form-control" aria-describedby="name">
+    </div>
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <label class="input-group-text" for="inputGroupSelect01">Beverages</label>
+        </div>
+        <select onchange="myFunction(this);" class="custom-select" id="inputGroupSelect01">
+            <option selected>Choose...</option>
+            <option value="Coffee">Coffee</option>
+            <option value="Tea">Tea</option>
+            <option value="Beer">Beer</option>
+            <option value="Wine">Wine</option>
+        </select>
+        <div class="input-group-prepend">
+            <span class="input-group-text">Quantity</span>
+        </div>
+        <input type="number" id="quantity" min="1" class="form-control" aria-describedby="quantity">
+    </div>
+    <div id="birthDate" class="input-group">
+        <div class="input-group-prepend">
+            <span class="input-group-text">Date of Birth</span>
+        </div>
+        <input id="dob" type="date" name="bday">
+    </div>
+    <div class="text-center mb-4">
+        <button id="subButton" onclick="submitOrder()" type="button" class="btn btn-secondary">Submit Order</button>
+    </div>
+    <div class="text-center mb-4">
+        <p id="invoice"></p>
+        <p id="total"></p>
+        <p id="test"></p>
+    </div>
+    <script>
+        function myFunction(x) {
+            var whichSelected = x.selectedIndex;
+            var sel = x.options[whichSelected].text;
+            if (sel == "Beer" || sel == "Wine") {
+                document.getElementById("birthDate").style.visibility = "visible";
+            }
+            else {
+                document.getElementById("birthDate").style.visibility = "hidden";
+            }
+        }
+
+        function submitOrder() {
+            var prices = { Coffee: 2.00, Tea: 2.5, Beer: 6.95, Wine: 12.00 };
+            var name = document.getElementById("name").value;
+            var quantity = document.getElementById("quantity").value;
+            var bev = document.getElementById("inputGroupSelect01").value;
+            var total = prices[bev] * quantity;
+            let date = moment();
+            var dob = document.getElementById("dob").value;
+            var age = moment().diff(dob, 'years');
+            if (bev == "Beer" || bev == "Wine") {
+                if (age <= 21) {
+                    document.getElementById("test").innerHTML = "You must be at least 21 years old to purchase alcohol.";
+                }
+                else {
+                    document.getElementById("invoice").innerHTML = "Customer: " + name + "<br>" + quantity + " " + bev + " @ $" + prices[bev];
+                    document.getElementById("total").innerHTML = "Total Due: $" + total;
+                }
+            }
+            else {
+                document.getElementById("invoice").innerHTML = "Customer: " + name + "<br>" + quantity + " " + bev + " @ $" + prices[bev];
+                document.getElementById("total").innerHTML = "Total Due: $" + total;
+            }
+            
+        }
+    </script>
+
+</body>
+</html> 
